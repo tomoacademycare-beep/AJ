@@ -15,7 +15,3 @@ services:
       - key: OLLAMA_HOST
         value: 0.0.0.0:11434
     autoDeploy: true
-    disk:
-      name: ollama-data
-      mountPath: /root/.ollama
-      sizeGB: 10
