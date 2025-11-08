@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.ollama/
+Modelfile-aj-mini-v2
+.DS_Store
+*.log
+_ngrok
