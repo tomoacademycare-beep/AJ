@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+env/
+venv/
+ENV/
+.Python
+pip-wheel-metadata/
+
+# Virtualenv
+venv/
+.env
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ollama/model blobs
+.ollama/
+Modelfile-aj-mini-v2
+
+# Logs
+*.log
+
+# ngrok
+ngrok.yml
+
+# node_modules (if any)
+node_modules/
