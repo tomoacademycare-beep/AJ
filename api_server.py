@@ -47,21 +47,29 @@ def chat():
         
         user_message = data['message']
         
-        # Call Ollama to get response
+        # Call Ollama to get response (increased timeout to 120 seconds for model loading)
         result = subprocess.run(
             ['ollama', 'run', MODEL_NAME, user_message],
             capture_output=True,
             text=True,
-            timeout=60
+            timeout=120
         )
         
         if result.returncode != 0:
+            error_msg = result.stderr if result.stderr else "Unknown error"
             return jsonify({
                 "error": "Model execution failed",
-                "details": result.stderr
+                "details": error_msg,
+                "returncode": result.returncode
             }), 500
         
         response_text = result.stdout.strip()
+        
+        if not response_text:
+            return jsonify({
+                "error": "Model returned empty response",
+                "details": "The model processed the message but returned no text"
+            }), 500
         
         return jsonify({
             "response": response_text,
@@ -71,11 +79,13 @@ def chat():
         
     except subprocess.TimeoutExpired:
         return jsonify({
-            "error": "Request timeout"
+            "error": "Request timeout - model took too long to respond",
+            "details": "The model needs more than 120 seconds. Try a simpler question or restart the API."
         }), 504
     except Exception as e:
         return jsonify({
-            "error": str(e)
+            "error": str(e),
+            "type": type(e).__name__
         }), 500
 
 @app.route('/api/info', methods=['GET'])
