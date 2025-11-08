@@ -22,7 +22,6 @@ Thumbs.db
 
 # Ollama/model blobs
 .ollama/
-Modelfile-aj-mini-v2
 
 # Logs
 *.log
