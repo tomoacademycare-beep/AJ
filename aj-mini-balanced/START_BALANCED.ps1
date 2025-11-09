@@ -29,7 +29,7 @@ try {
     
     Write-Host "      Warming up model..." -ForegroundColor Yellow
     try {
-        $warmup = Invoke-RestMethod -Uri "http://localhost:5000/api/chat" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"message":"hi"}' -TimeoutSec 60
+        $warmup = Invoke-RestMethod -Uri "http://localhost:5002/api/chat" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"message":"hi"}' -TimeoutSec 60
         Write-Host "      Model ready!" -ForegroundColor Green
     } catch {
         Write-Host "      Model loading in background..." -ForegroundColor Yellow
