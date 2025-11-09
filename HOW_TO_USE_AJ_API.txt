@@ -1,0 +1,87 @@
+====================================================================
+                    AJ API - HOW TO USE
+                    Created by AJ STUDIOZ
+====================================================================
+
+✅ SETUP COMPLETE! 
+
+Your AJ API with DeepSeek-R1:8B model is ready to use!
+
+====================================================================
+                    QUICK START
+====================================================================
+
+1. DOUBLE-CLICK the "AJ-mini" shortcut on your Desktop
+
+2. Wait for the startup to complete (about 15 seconds)
+
+3. The script will display your ngrok public URL
+
+4. Use that URL to access AJ from anywhere!
+
+====================================================================
+                    CURRENT SESSION
+====================================================================
+
+Your API is currently running at:
+https://cryptozygous-demetrice-homopolar.ngrok-free.dev/api/chat
+
+TEST IT NOW:
+curl -X POST "https://cryptozygous-demetrice-homopolar.ngrok-free.dev/api/chat" -H "Content-Type: application/json" -d "{\"message\":\"Hello AJ!\"}"
+
+====================================================================
+                    USE FROM ANYWHERE
+====================================================================
+
+Once started, you can access your AJ API from:
+- Your phone (using apps like Postman mobile)
+- Other computers
+- Web browsers (using tools like reqbin.com)
+- Your own applications
+
+ENDPOINT: POST https://[your-ngrok-url]/api/chat
+HEADERS: Content-Type: application/json
+BODY: {"message": "your question here"}
+
+====================================================================
+                    NGROK DASHBOARD
+====================================================================
+
+Monitor all requests at: http://localhost:4040
+(Only accessible from your computer)
+
+====================================================================
+                    FEATURES
+====================================================================
+
+✅ Model: DeepSeek-R1:8B (locally hosted)
+✅ Identity: AJ (created by AJ STUDIOZ)
+✅ Website: https://ajstudioz.co.in
+✅ Reasoning: Shows step-by-step thinking process
+✅ Access: Unlimited requests, completely free
+✅ Speed: Fast local inference
+✅ Privacy: Data stays on your machine
+
+====================================================================
+                    STOPPING THE API
+====================================================================
+
+Simply close the PowerShell window that appears when you run
+the AJ-mini shortcut. This will stop both the API server
+and ngrok tunnel.
+
+====================================================================
+                    TROUBLESHOOTING
+====================================================================
+
+If something doesn't work:
+
+1. Make sure no other program is using port 5000
+2. Check if ngrok is installed and in your PATH
+3. Verify Ollama is running (ollama serve)
+4. Ensure the aj-mini model exists (ollama list)
+
+====================================================================
+                    CREATED BY AJ STUDIOZ
+                    https://ajstudioz.co.in
+====================================================================
