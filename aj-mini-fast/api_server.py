@@ -45,7 +45,7 @@ def home():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    """Chat with AJ - Supports streaming"""
+    """Chat with AJ - Supports streaming and model selection"""
     try:
         data = request.get_json()
         
@@ -55,6 +55,8 @@ def chat():
             }), 400
         
         user_message = data['message']
+        # Support model selection via request body or default to MODEL_NAME
+        selected_model = data.get('model', MODEL_NAME)
         stream = request.args.get('stream', 'false').lower() == 'true'
         
         # If streaming is requested
@@ -63,7 +65,7 @@ def chat():
                 try:
                     # Use Ollama API for streaming
                     process = subprocess.Popen(
-                        ['ollama', 'run', MODEL_NAME, user_message],
+                        ['ollama', 'run', selected_model, user_message],
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
                         text=True,
@@ -75,7 +77,7 @@ def chat():
                         if line.strip():
                             chunk = {
                                 "chunk": line.strip(),
-                                "model": MODEL_NAME,
+                                "model": selected_model,
                                 "done": False
                             }
                             yield f"data: {json.dumps(chunk)}\n\n"
@@ -85,7 +87,7 @@ def chat():
                     # Send completion signal
                     final = {
                         "chunk": "",
-                        "model": MODEL_NAME,
+                        "model": selected_model,
                         "done": True
                     }
                     yield f"data: {json.dumps(final)}\n\n"
@@ -108,7 +110,7 @@ def chat():
         
         # Non-streaming response
         result = subprocess.run(
-            ['ollama', 'run', MODEL_NAME, user_message],
+            ['ollama', 'run', selected_model, user_message],
             capture_output=True,
             text=True,
             timeout=120
@@ -132,7 +134,7 @@ def chat():
         
         return jsonify({
             "response": response_text,
-            "model": MODEL_NAME,
+            "model": selected_model,
             "creator": "AJ STUDIOZ",
             "timestamp": time.time()
         })
@@ -200,7 +202,7 @@ def list_models():
 
 @app.route('/v1/chat/completions', methods=['POST'])
 def chat_completions():
-    """OpenAI-compatible chat completions endpoint"""
+    """OpenAI-compatible chat completions endpoint with model selection"""
     try:
         data = request.get_json()
         
@@ -222,6 +224,8 @@ def chat_completions():
                 "error": "No user message found"
             }), 400
         
+        # Support model selection via request body or default to MODEL_NAME
+        selected_model = data.get('model', MODEL_NAME)
         stream = data.get('stream', False)
         
         # If streaming is requested
@@ -229,7 +233,7 @@ def chat_completions():
             def generate():
                 try:
                     process = subprocess.Popen(
-                        ['ollama', 'run', MODEL_NAME, user_message],
+                        ['ollama', 'run', selected_model, user_message],
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
                         text=True,
@@ -242,7 +246,7 @@ def chat_completions():
                                 "id": "chatcmpl-" + str(time.time()),
                                 "object": "chat.completion.chunk",
                                 "created": int(time.time()),
-                                "model": MODEL_NAME,
+                                "model": selected_model,
                                 "choices": [{
                                     "index": 0,
                                     "delta": {"content": line.strip()},
@@ -257,7 +261,7 @@ def chat_completions():
                         "id": "chatcmpl-" + str(time.time()),
                         "object": "chat.completion.chunk",
                         "created": int(time.time()),
-                        "model": MODEL_NAME,
+                        "model": selected_model,
                         "choices": [{
                             "index": 0,
                             "delta": {},
@@ -284,7 +288,7 @@ def chat_completions():
         
         # Non-streaming response
         result = subprocess.run(
-            ['ollama', 'run', MODEL_NAME, user_message],
+            ['ollama', 'run', selected_model, user_message],
             capture_output=True,
             text=True,
             timeout=120
@@ -301,7 +305,7 @@ def chat_completions():
             "id": "chatcmpl-" + str(time.time()),
             "object": "chat.completion",
             "created": int(time.time()),
-            "model": MODEL_NAME,
+            "model": selected_model,
             "choices": [{
                 "index": 0,
                 "message": {
